@@ -1,5 +1,7 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import groupBy from "./utils/groupBy";
+import { Users, User } from "./model/users";
 import data from "./assets/data.json";
 
 const GridTable = ({
@@ -12,7 +14,7 @@ const GridTable = ({
   onClick?: (e: React.MouseEvent) => void;
 }) => (
   <div
-    className="bg-zinc-200  w-full md:max-w-[560px] md:min-w-[180px] rounded-md shadow-md h-full min-h-[700px]"
+    className="bg-zinc-200  w-full md:max-w-[560px] md:min-w-[180px] rounded-md shadow-md h-full min-h-[80vh]"
     onClick={onClick}
   >
     <div className="-mt-2 bg-gray-300 font-bold text-slate-900 p-5 text-center -mb-2 rounded-sm h-16">
@@ -69,6 +71,60 @@ function App() {
     Vegetable: "veg",
   };
 
+  //optional
+  useEffect(() => {
+    fetch("https://dummyjson.com/users")
+      .then((res) => res.json())
+      .then((x: Users) => {
+        if (x?.users?.length) {
+          const order = groupBy(x.users, "company.department");
+          console.log(
+            Object.fromEntries(
+              Object.entries(order).map(([key, value]) => {
+                const age: number[] = [];
+                const arr = {
+                  male: 0,
+                  female: 0,
+                  ageRange: "",
+                  hair: {} as { [key: string]: number },
+                  addressUser: {},
+                };
+
+                (value as User[]).forEach((x: User) => {
+                  age.push(x.age);
+                  if (x.gender === "male") {
+                    arr.male += 1;
+                  }
+                  if (x.gender === "female") {
+                    arr.female += 1;
+                  }
+                  if (x?.hair?.color) {
+                    const hairColor = x.hair.color;
+                    if (arr.hair[hairColor]) {
+                      arr.hair[hairColor] += 1;
+                    } else {
+                      arr.hair[hairColor] = 1;
+                    }
+                  }
+                  arr.addressUser = {
+                    ...arr.addressUser,
+                    [`${x?.firstName}${x?.lastName}`]: x?.address?.postalCode,
+                  };
+                });
+
+                const minAge = Math.min(...age);
+                const maxAge = Math.max(...age);
+
+                arr.ageRange = [...new Set([minAge, maxAge])].join(" - ");
+
+                return [key, arr];
+              })
+            )
+          );
+        }
+      });
+  }, []);
+
   const onAdd = (item: ListType) => {
     const listKey = keyName[item.type as keyof typeof keyName]; //convert item.type to key of List
     history.current = [...history.current, item];
@@ -109,8 +165,8 @@ function App() {
   );
 
   return (
-    <div className="grid grid-rows-3 md:grid-cols-3 gap-5 p-5 w-3/4 mx-auto ">
-      <div className="flex flex-col p-10 gap-5 w-full md:max-w-[300px]">
+    <div className="flex flex-col md:flex-row gap-5 p-5 w-3/4 mx-auto">
+      <div className="flex flex-col p-5 gap-5 w-full md:max-w-[300px] h-[80vh] overflow-y-auto">
         <AnimatePresence>
           {list.main.map((item) => (
             <Item onClick={() => onAdd(item)} key={`main-${item.name}`}>

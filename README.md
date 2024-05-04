@@ -52,6 +52,7 @@
 ```
 
 Please make a todo list that
+
 - Have a list of clickable buttons.
 - Each button will be moved into its own column separated by type.
 - Once moved, each button will have 5 seconds on the screen and then will be moved back to the bottom of the main list.
@@ -65,12 +66,15 @@ See example in the link below
 
 Please do your best to show your best solution
 we are looking for
+
 1. Answer the need of question
 2. Clean code easy to read
 
 Bonus: if you have multiple solutions we could discuss those theories in our interview (no need to submit multiple versions, just send us the best one you think.)
 
-## 2. Create data from API *(OPTIONAL)*
+## 2. Create data from API _(OPTIONAL)_
+
+(Please Inspect Grouped data using F12)
 
 API from <https://dummyjson.com/users>
 
@@ -88,7 +92,7 @@ API from <https://dummyjson.com/users>
             "female": 1,                    // ---> Female Count Summary
             "ageRange": "XX-XX",            // ---> Range
             "hair": {                       // ---> "Color": Color Summary
-                "Black": 1,                
+                "Black": 1,
                 "Blond": 1,
                 "Chestnut": 1,
                 "Brown": 1
@@ -97,6 +101,6 @@ API from <https://dummyjson.com/users>
                 "TerryMedhurst": "XXXXX",
             }
         }
-    }, 
+    },
     ...
 ```
