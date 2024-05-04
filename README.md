@@ -1,5 +1,7 @@
 # Assignment
 
+View Page : https://phongpisut.github.io/frontend-assignment/
+
 ## 1. Auto Delete Todo List
 
 ```
