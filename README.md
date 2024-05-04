@@ -2,6 +2,7 @@
 
 - Please Inspect Grouped data using F12
 - View Page : https://phongpisut.github.io/frontend-assignment/
+- For further information, please contact me. 
 
 
 ## 1. Auto Delete Todo List
