@@ -127,7 +127,7 @@ function App() {
   }, []);
 
   const onAdd = (item: ListType) => {
-    item = { ...item, ttl: 3 };
+    item = { ...item, ttl: 5 };
     const listKey = keyName[item.type as keyof typeof keyName]; //convert item.type to key of List
     history.current = [...history.current, item];
     setList((prev) => ({
