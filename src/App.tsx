@@ -50,6 +50,7 @@ const Item = ({
 type ListType = {
   type: string;
   name: string;
+  ttl?: number;
 };
 
 type List = {
@@ -126,6 +127,7 @@ function App() {
   }, []);
 
   const onAdd = (item: ListType) => {
+    item = { ...item, ttl: 3 };
     const listKey = keyName[item.type as keyof typeof keyName]; //convert item.type to key of List
     history.current = [...history.current, item];
     setList((prev) => ({
@@ -136,8 +138,8 @@ function App() {
   };
 
   const onRemove = useCallback(
-    (item: ListType, event: React.MouseEvent) => {
-      event.stopPropagation(); // prevent click on parent
+    (item: ListType, event?: React.MouseEvent) => {
+      event?.stopPropagation?.(); // prevent click on parent
       const listKey = keyName[item.type as keyof typeof keyName];
       history.current = history.current.filter((x) => x.name !== item.name);
       setList((prev) => ({
@@ -153,7 +155,7 @@ function App() {
   );
 
   const onPopHistory = useCallback(
-    (event: React.MouseEvent) => {
+    (event?: React.MouseEvent) => {
       if (history.current.length > 0) {
         const item = history.current.pop();
         if (item) {
@@ -163,6 +165,25 @@ function App() {
     },
     [onRemove]
   );
+
+  useEffect(() => {
+    const time = setInterval(() => {
+      history.current = history.current.map((x) =>
+        x.ttl ? { ...x, ttl: x.ttl - 1 } : x
+      );
+      const removed: ListType[] = history.current.filter((x) => !x.ttl);
+      history.current = history.current.filter((x) => x.ttl);
+
+      setList((prev) => ({
+        main: [...prev.main, ...removed],
+        fruits: history.current.filter((x) => x.type === "Fruit"),
+        veg: history.current.filter((x) => x.type === "Vegetable"),
+      }));
+    }, 1000);
+
+    return () => clearInterval(time);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row gap-5 p-5 w-3/4 mx-auto">
