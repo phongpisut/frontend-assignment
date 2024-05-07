@@ -1,5 +1,10 @@
 # Assignment
 
+- Please Inspect Grouped data using F12
+- View Page : https://phongpisut.github.io/frontend-assignment/
+- Feel free to contact me if you'd like further explanation or information. 
+
+
 ## 1. Auto Delete Todo List
 
 ```
@@ -73,8 +78,6 @@ we are looking for
 Bonus: if you have multiple solutions we could discuss those theories in our interview (no need to submit multiple versions, just send us the best one you think.)
 
 ## 2. Create data from API _(OPTIONAL)_
-
-(Please Inspect Grouped data using F12)
 
 API from <https://dummyjson.com/users>
 
