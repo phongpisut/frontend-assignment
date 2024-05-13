@@ -167,23 +167,27 @@ function App() {
   );
 
   useEffect(() => {
-    const time = setInterval(() => {
-      history.current = history.current.map((x) =>
-        x.ttl ? { ...x, ttl: x.ttl - 1 } : x
-      );
-      const removed: ListType[] = history.current.filter((x) => !x.ttl);
-      history.current = history.current.filter((x) => x.ttl);
+    let timer: unknown;
 
-      setList((prev) => ({
-        main: [...prev.main, ...removed],
-        fruits: history.current.filter((x) => x.type === "Fruit"),
-        veg: history.current.filter((x) => x.type === "Vegetable"),
-      }));
-    }, 1000);
+    if (list.fruits.length || list.main.length) {
+      timer = setInterval(() => {
+        history.current = history.current.map((x) =>
+          x.ttl ? { ...x, ttl: x.ttl - 1 } : x
+        );
+        const removed: ListType[] = history.current.filter((x) => !x.ttl);
+        history.current = history.current.filter((x) => x.ttl);
 
-    return () => clearInterval(time);
+        setList((prev) => ({
+          main: [...prev.main, ...removed],
+          fruits: history.current.filter((x) => x.type === "Fruit"),
+          veg: history.current.filter((x) => x.type === "Vegetable"),
+        }));
+      }, 1000);
+    }
+
+    return () => clearInterval(timer as number);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [list.fruits, list.veg]);
 
   return (
     <div className="flex flex-col md:flex-row gap-5 p-5 w-3/4 mx-auto">
